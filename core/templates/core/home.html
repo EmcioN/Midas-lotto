@@ -3,5 +3,52 @@
 {% block title %}Home | Midas Lotto{% endblock %}
 
 {% block content %}
-<h1>Welcome to Midas Lotto</h1>
+<section class="p-5 mb-4 bg-warning-subtle rounded-4 text-center">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold">Midas Lotto</h1>
+        <p class="lead">Join the workplace lotto club and track every draw, win, and subscription in one place.</p>
+        <a href="#" class="btn btn-dark btn-lg">Join Now</a>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h4">Current Month Winnings</h2>
+                <p class="display-6 mb-0">€0.00</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h4">Overall Winnings</h2>
+                <p class="display-6 mb-0">€0.00</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h4">Current Draw</h2>
+        <p>Draw information, ticket image, and result summary will go here.</p>
+
+        <div class="border rounded p-4 bg-light text-center mb-3">
+            Image placeholder for current draw
+        </div>
+
+        <h3 class="h5">Comments</h3>
+        <p class="text-muted mb-0">Comments for the latest draw will appear here.</p>
+    </div>
+</section>
+
+<section class="card shadow-sm">
+    <div class="card-body text-center">
+        <h2 class="h4">Subscriptions</h2>
+        <p>4 draws every month. If you join mid-month, your cost should only cover the remaining draws.</p>
+        <a href="#" class="btn btn-warning">View Plans</a>
+    </div>
+</section>
 {% endblock %}
