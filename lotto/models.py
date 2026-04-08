@@ -17,6 +17,13 @@ class MonthlySummary(models.Model):
     def __str__(self):
         return f"{self.month:02d}/{self.year}"
 
+    def draws_completed(self):
+        return self.draws.filter(draw_date__lt=timezone.now().date()).count()
+
+    def draws_remaining(self):
+        remaining = 4 - self.draws_completed()
+        return max(remaining, 0)
+
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
         MonthlySummary,
