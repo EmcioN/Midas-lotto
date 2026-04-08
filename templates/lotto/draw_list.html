@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}All Draws | Midas Lotto{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h3 mb-4">All Draws</h1>
+
+        {% for draw in draws %}
+            <div class="border rounded p-3 mb-3">
+                <h2 class="h5 mb-1">
+                    <a href="{% url 'draw_detail' draw.id %}" class="text-decoration-none">
+                        {{ draw.title }}
+                    </a>
+                </h2>
+                <p class="mb-1"><strong>Date:</strong> {{ draw.draw_date }}</p>
+                <p class="mb-1"><strong>Month:</strong> {{ draw.monthly_summary }}</p>
+                <p class="mb-0"><strong>Winnings:</strong> €{{ draw.winnings_amount }}</p>
+            </div>
+        {% empty %}
+            <p class="mb-0">No draws available yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
