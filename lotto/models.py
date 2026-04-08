@@ -54,4 +54,25 @@ class DrawComment(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.draw.title}"    
+        return f"Comment by {self.user.username} on {self.draw.title}"
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')
+    monthly_summary = models.ForeignKey(MonthlySummary, on_delete=models.CASCADE, related_name='subscriptions')
+    draws_paid_for = models.PositiveSmallIntegerField(default=4)
+    amount_paid = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    joined_at = models.DateField(default=timezone.now)
+    expiry_date = models.DateField()
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-joined_at']
+        unique_together = ('user', 'monthly_summary')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.monthly_summary}"
+
+    @staticmethod
+    def calculate_price(full_month_price, draws_paid_for):
+        price_per_draw = Decimal(full_month_price) / Decimal('4')
+        return price_per_draw * Decimal(draws_paid_for)
