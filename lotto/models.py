@@ -5,6 +5,21 @@ from django.db import models
 from django.utils import timezone
 
 
+class MonthlySummary(models.Model):
+    month = models.PositiveSmallIntegerField()
+    year = models.PositiveSmallIntegerField()
+    total_winnings = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ('month', 'year')
+        ordering = ['-year', '-month']
+
+    def __str__(self):
+        return f"{self.month:02d}/{self.year}"
+
+
+
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
         MonthlySummary,
