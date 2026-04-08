@@ -18,8 +18,6 @@ class MonthlySummary(models.Model):
     def __str__(self):
         return f"{self.month:02d}/{self.year}"
 
-
-
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
         MonthlySummary,
@@ -39,3 +37,10 @@ class Draw(models.Model):
     def __str__(self):
         return f"{self.title} ({self.draw_date})"
 
+class DrawImage(models.Model):
+    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='draw_images/')
+    caption = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return f"Image for {self.draw.title}"
