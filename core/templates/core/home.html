@@ -7,7 +7,7 @@
     <div class="container py-4">
         <h1 class="display-4 fw-bold">Midas Lotto</h1>
         <p class="lead">Join the workplace lotto club and track every draw, win, and subscription in one place.</p>
-        <a href="#" class="btn btn-dark btn-lg">Join Now</a>
+        <a href="{% url 'register' %}" class="btn btn-dark btn-lg">Join Now</a>
     </div>
 </section>
 
@@ -16,7 +16,9 @@
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h2 class="h4">Current Month Winnings</h2>
-                <p class="display-6 mb-0">€0.00</p>
+                <p class="display-6 mb-0">
+                    €{{ latest_month.total_winnings|default:"0.00" }}
+                </p>
             </div>
         </div>
     </div>
@@ -24,7 +26,7 @@
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h2 class="h4">Overall Winnings</h2>
-                <p class="display-6 mb-0">€0.00</p>
+                <p class="display-6 mb-0">€{{ overall_winnings }}</p>
             </div>
         </div>
     </div>
@@ -33,14 +35,34 @@
 <section class="card shadow-sm mb-4">
     <div class="card-body">
         <h2 class="h4">Current Draw</h2>
-        <p>Draw information, ticket image, and result summary will go here.</p>
 
-        <div class="border rounded p-4 bg-light text-center mb-3">
-            Image placeholder for current draw
-        </div>
+        {% if current_draw %}
+            <h3 class="h5">{{ current_draw.title }}</h3>
+            <p><strong>Date:</strong> {{ current_draw.draw_date }}</p>
+            <p><strong>Result:</strong> {{ current_draw.result_text|default:"No result added yet." }}</p>
+            <p><strong>Winnings:</strong> €{{ current_draw.winnings_amount }}</p>
 
-        <h3 class="h5">Comments</h3>
-        <p class="text-muted mb-0">Comments for the latest draw will appear here.</p>
+            {% if current_draw.images.first %}
+                <img src="{{ current_draw.images.first.image.url }}" class="img-fluid rounded mb-3" alt="{{ current_draw.title }}">
+            {% else %}
+                <div class="border rounded p-4 bg-light text-center mb-3">
+                    Image placeholder for current draw
+                </div>
+            {% endif %}
+
+            <h3 class="h5">Comments</h3>
+            {% for comment in current_draw.comments.all %}
+                <div class="border rounded p-3 mb-2">
+                    <strong>{{ comment.user.username }}</strong>
+                    <small class="text-muted d-block">{{ comment.created_at }}</small>
+                    <p class="mb-0">{{ comment.body }}</p>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No comments yet.</p>
+            {% endfor %}
+        {% else %}
+            <p class="mb-0">No current draw has been selected yet.</p>
+        {% endif %}
     </div>
 </section>
 
