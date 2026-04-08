@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from lotto.models import MonthlySummary
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
@@ -22,7 +23,14 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    latest_month = MonthlySummary.objects.first()
+    remaining_draws = latest_month.draws_remaining() if latest_month else 0
+
+    context = {
+        'latest_month': latest_month,
+        'remaining_draws': remaining_draws,
+    }
+    return render(request, 'accounts/profile.html', context)
 
 
 @login_required
