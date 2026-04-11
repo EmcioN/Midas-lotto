@@ -37,6 +37,21 @@
         {% empty %}
             <p>No comments yet.</p>
         {% endfor %}
+
+        <hr>
+
+        <h2 class="h5">Add Comment</h2>
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-dark">Post Comment</button>
+            </form>
+        {% else %}
+            <p class="mb-0">
+                <a href="{% url 'login' %}">Log in</a> to post a comment.
+            </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
