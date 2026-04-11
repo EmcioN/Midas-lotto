@@ -83,3 +83,7 @@ class Subscription(models.Model):
     def calculate_price(full_month_price, draws_paid_for):
         price_per_draw = Decimal(full_month_price) / Decimal('4')
         return price_per_draw * Decimal(draws_paid_for)
+
+    @staticmethod
+    def calculate_remaining_draws(monthly_summary):
+        return monthly_summary.draws_remaining()
