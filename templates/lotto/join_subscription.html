@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Join Subscription | Midas Lotto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h3 mb-4">Join Current Subscription</h1>
+
+                <p><strong>Current month:</strong> {{ latest_month }}</p>
+                <p><strong>Remaining draws:</strong> {{ remaining_draws }}</p>
+                <p class="text-muted">
+                    Enter the full monthly price below. The system will only charge for the remaining draws.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-warning">Join Subscription</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
