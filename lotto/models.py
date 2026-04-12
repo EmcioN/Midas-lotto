@@ -35,8 +35,10 @@ class Draw(models.Model):
     draw_number = models.PositiveSmallIntegerField()
     result_text = models.TextField(blank=True)
     winnings_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    is_current = models.BooleanField(default=False)
-
+    is_current = models.BooleanField(
+        default=False,
+        help_text='Only one draw should be marked as current at a time.'
+    )
     class Meta:
         ordering = ['-draw_date', '-draw_number']
 
