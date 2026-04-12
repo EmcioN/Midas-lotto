@@ -1,4 +1,5 @@
 from datetime import date
+import calendar
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
@@ -69,7 +70,11 @@ def join_subscription(request):
                 draws_paid_for=remaining_draws,
                 amount_paid=amount_to_pay,
                 joined_at=date.today(),
-                expiry_date=date(latest_month.year, latest_month.month, 28),
+                expiry_date=date(
+                    latest_month.year,
+                    latest_month.month,
+                    calendar.monthrange(latest_month.year, latest_month.month)[1]
+                    ),
                 active=True
             )
 
