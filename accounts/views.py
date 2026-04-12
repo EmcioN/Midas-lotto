@@ -25,10 +25,12 @@ def register(request):
 def profile(request):
     latest_month = MonthlySummary.objects.first()
     remaining_draws = latest_month.draws_remaining() if latest_month else 0
+    subscriptions = request.user.subscriptions.select_related('monthly_summary').all()
 
     context = {
         'latest_month': latest_month,
         'remaining_draws': remaining_draws,
+        'subscriptions': subscriptions,
     }
     return render(request, 'accounts/profile.html', context)
 

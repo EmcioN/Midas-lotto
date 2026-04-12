@@ -22,4 +22,22 @@
         <a href="{% url 'join_subscription' %}" class="btn btn-warning ms-2">Join Current Month</a>
     </div>
 </div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h2 class="h4 mb-3">My Subscriptions</h2>
+
+        {% for subscription in subscriptions %}
+            <div class="border rounded p-3 mb-3">
+                <p class="mb-1"><strong>Month:</strong> {{ subscription.monthly_summary }}</p>
+                <p class="mb-1"><strong>Draws paid for:</strong> {{ subscription.draws_paid_for }}</p>
+                <p class="mb-1"><strong>Amount paid:</strong> €{{ subscription.amount_paid }}</p>
+                <p class="mb-1"><strong>Expiry date:</strong> {{ subscription.expiry_date }}</p>
+                <p class="mb-0"><strong>Status:</strong> {{ subscription.active|yesno:"Active,Inactive" }}</p>
+            </div>
+        {% empty %}
+            <p class="mb-0">You have no subscriptions yet.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
