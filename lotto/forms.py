@@ -15,8 +15,7 @@ class DrawCommentForm(forms.ModelForm):
 
 
 class SubscriptionJoinForm(forms.Form):
-    full_month_price = forms.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        min_value=0
+    confirm_join = forms.BooleanField(
+        required=True,
+        label='I understand I will be charged for the remaining draws in this month.'
     )
