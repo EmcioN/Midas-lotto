@@ -10,15 +10,18 @@
                 <h1 class="h3 mb-4">Join Current Subscription</h1>
 
                 <p><strong>Current month:</strong> {{ latest_month }}</p>
+                <p><strong>Full monthly price:</strong> €{{ latest_month.subscription_price }}</p>
                 <p><strong>Remaining draws:</strong> {{ remaining_draws }}</p>
+                <p><strong>Amount to pay now:</strong> €{{ amount_to_pay }}</p>
+
                 <p class="text-muted">
-                    Enter the full monthly price below. The system will only charge for the remaining draws.
+                    The amount is calculated automatically based on the remaining draws in this month.
                 </p>
 
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-warning">Join Subscription</button>
+                    <button type="submit" class="btn btn-warning">Confirm and Join</button>
                 </form>
             </div>
         </div>
