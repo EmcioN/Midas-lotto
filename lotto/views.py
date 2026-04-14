@@ -57,13 +57,14 @@ def join_subscription(request):
         return redirect('profile')
 
     remaining_draws = Subscription.calculate_remaining_draws(latest_month)
+    amount_to_pay = Subscription.calculate_price(
+        latest_month.subscription_price,
+        remaining_draws
+    )
 
     if request.method == 'POST':
         form = SubscriptionJoinForm(request.POST)
         if form.is_valid():
-            full_month_price = form.cleaned_data['full_month_price']
-            amount_to_pay = Subscription.calculate_price(full_month_price, remaining_draws)
-
             subscription = Subscription.objects.create(
                 user=request.user,
                 monthly_summary=latest_month,
@@ -74,7 +75,7 @@ def join_subscription(request):
                     latest_month.year,
                     latest_month.month,
                     calendar.monthrange(latest_month.year, latest_month.month)[1]
-                    ),
+                ),
                 active=True
             )
 
@@ -90,14 +91,10 @@ def join_subscription(request):
     else:
         form = SubscriptionJoinForm()
 
-    amount_preview = None
-    if remaining_draws >= 0:
-        amount_preview = remaining_draws
-
     context = {
         'form': form,
         'latest_month': latest_month,
         'remaining_draws': remaining_draws,
-        'amount_preview': amount_preview,
+        'amount_to_pay': amount_to_pay,
     }
     return render(request, 'lotto/join_subscription.html', context)
