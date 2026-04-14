@@ -15,7 +15,7 @@ class DrawCommentInline(admin.TabularInline):
 
 @admin.register(MonthlySummary)
 class MonthlySummaryAdmin(admin.ModelAdmin):
-    list_display = ('month', 'year', 'total_winnings')
+    list_display = ('month', 'year', 'subscription_price', 'total_winnings')
     ordering = ('-year', '-month')
 
 
