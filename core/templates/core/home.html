@@ -69,8 +69,14 @@
 <section class="card shadow-sm">
     <div class="card-body text-center">
         <h2 class="h4">Subscriptions</h2>
-        <p>4 draws every month. If you join mid-month, your cost should only cover the remaining draws.</p>
-        <a href="{% url 'join_subscription' %}" class="btn btn-warning">Join Current Month</a>
+
+        {% if latest_month %}
+            <p><strong>Current month price:</strong> €{{ latest_month.subscription_price }}</p>
+            <p>There are 4 draws every month. If you join mid-month, you only pay for the remaining draws.</p>
+            <a href="{% url 'join_subscription' %}" class="btn btn-warning">Join Current Month</a>
+        {% else %}
+            <p>No active subscription month is available yet.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
