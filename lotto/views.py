@@ -57,6 +57,11 @@ def join_subscription(request):
         return redirect('profile')
 
     remaining_draws = Subscription.calculate_remaining_draws(latest_month)
+
+    if remaining_draws <= 0:
+        messages.error(request, 'This month is already finished. No draws remain to join.')
+        return redirect('profile')
+
     amount_to_pay = Subscription.calculate_price(
         latest_month.subscription_price,
         remaining_draws
