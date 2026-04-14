@@ -8,6 +8,7 @@ class MonthlySummary(models.Model):
     month = models.PositiveSmallIntegerField()
     year = models.PositiveSmallIntegerField()
     total_winnings = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    subscription_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     notes = models.TextField(blank=True)
 
     class Meta:
