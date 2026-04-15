@@ -157,3 +157,38 @@ def subscription_success(request):
 @login_required
 def subscription_cancel(request):
     return render(request, 'lotto/subscription_cancel.html')
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload,
+            sig_header,
+            settings.STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError:
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError:
+        return HttpResponse(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        session_id = session.get('id')
+
+        subscription = Subscription.objects.filter(
+            stripe_checkout_session_id=session_id
+        ).first()
+
+        if subscription and not subscription.payment_completed:
+            subscription.payment_completed = True
+            subscription.active = True
+            subscription.save()
+
+            profile = Profile.objects.get(user=subscription.user)
+            profile.subscription_expiry = subscription.expiry_date
+            profile.save()
+
+    return HttpResponse(status=200)
