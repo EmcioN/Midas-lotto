@@ -2,6 +2,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class MonthlySummary(models.Model):
@@ -40,11 +41,22 @@ class Draw(models.Model):
         default=False,
         help_text='Only one draw should be marked as current at a time.'
     )
+
     class Meta:
         ordering = ['-draw_date', '-draw_number']
 
     def __str__(self):
         return f"{self.title} ({self.draw_date})"
+
+    def clean(self):
+        if self.is_current:
+            existing_current = Draw.objects.filter(is_current=True).exclude(pk=self.pk)
+            if existing_current.exists():
+                raise ValidationError('Only one draw can be marked as current at a time.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 class DrawImage(models.Model):
     draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='images')
