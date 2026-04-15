@@ -144,3 +144,16 @@ def join_subscription(request):
         'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
     }
     return render(request, 'lotto/join_subscription.html', context)
+
+@login_required
+def subscription_success(request):
+    session_id = request.GET.get('session_id')
+    context = {
+        'session_id': session_id,
+    }
+    return render(request, 'lotto/subscription_success.html', context)
+
+
+@login_required
+def subscription_cancel(request):
+    return render(request, 'lotto/subscription_cancel.html')

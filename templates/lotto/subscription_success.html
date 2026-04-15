@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Submitted | Midas Lotto{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+        <h1 class="h3 mb-3">Payment submitted</h1>
+        <p>Stripe has redirected you back successfully.</p>
+        <p class="text-muted">
+            Your subscription will be confirmed once payment verification is completed.
+        </p>
+        <a href="{% url 'profile' %}" class="btn btn-dark">Back to Profile</a>
+    </div>
+</div>
+{% endblock %}
