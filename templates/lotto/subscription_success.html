@@ -6,10 +6,15 @@
 <div class="card shadow-sm">
     <div class="card-body text-center">
         <h1 class="h3 mb-3">Payment submitted</h1>
-        <p>Stripe has redirected you back successfully.</p>
+
+        {% if payment_status %}
+            <p><strong>Stripe payment status:</strong> {{ payment_status }}</p>
+        {% endif %}
+
         <p class="text-muted">
-            Your subscription will be confirmed once payment verification is completed.
+            Your subscription will be confirmed once payment verification is completed by the webhook.
         </p>
+
         <a href="{% url 'profile' %}" class="btn btn-dark">Back to Profile</a>
     </div>
 </div>

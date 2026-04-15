@@ -153,11 +153,20 @@ def join_subscription(request):
 @login_required
 def subscription_success(request):
     session_id = request.GET.get('session_id')
+    payment_status = None
+
+    if session_id:
+        try:
+            session = stripe.checkout.Session.retrieve(session_id)
+            payment_status = session.get('payment_status')
+        except stripe.error.StripeError:
+            payment_status = None
+
     context = {
         'session_id': session_id,
+        'payment_status': payment_status,
     }
     return render(request, 'lotto/subscription_success.html', context)
-
 
 @login_required
 def subscription_cancel(request):
