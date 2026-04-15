@@ -10,12 +10,13 @@
         <p><strong>Email:</strong> {{ request.user.email }}</p>
         <p><strong>Full name:</strong> {{ request.user.profile.full_name|default:"-" }}</p>
         <p><strong>Department:</strong> {{ request.user.profile.department|default:"-" }}</p>
-        <p><strong>Subscription expiry:</strong> {{ request.user.profile.subscription_expiry|default:"Not active yet" }}</p>
+        <p><strong>Subscription expiry:</strong> {{ request.user.profile.subscription_expiry|default:"Not active yet" }}
+        </p>
 
         {% if latest_month %}
-            <hr>
-            <p><strong>Current lotto month:</strong> {{ latest_month }}</p>
-            <p><strong>Remaining draws this month:</strong> {{ remaining_draws }}</p>
+        <hr>
+        <p><strong>Current lotto month:</strong> {{ latest_month }}</p>
+        <p><strong>Remaining draws this month:</strong> {{ remaining_draws }}</p>
         {% endif %}
 
         <a href="{% url 'profile_edit' %}" class="btn btn-dark">Edit Profile</a>
@@ -28,15 +29,16 @@
         <h2 class="h4 mb-3">My Subscriptions</h2>
 
         {% for subscription in subscriptions %}
-            <div class="border rounded p-3 mb-3">
-                <p class="mb-1"><strong>Month:</strong> {{ subscription.monthly_summary }}</p>
-                <p class="mb-1"><strong>Draws paid for:</strong> {{ subscription.draws_paid_for }}</p>
-                <p class="mb-1"><strong>Amount paid:</strong> €{{ subscription.amount_paid }}</p>
-                <p class="mb-1"><strong>Expiry date:</strong> {{ subscription.expiry_date }}</p>
-                <p class="mb-0"><strong>Status:</strong> {{ subscription.active|yesno:"Active,Inactive" }}</p>
-            </div>
+        <div class="border rounded p-3 mb-3">
+            <p class="mb-1"><strong>Month:</strong> {{ subscription.monthly_summary }}</p>
+            <p class="mb-1"><strong>Draws paid for:</strong> {{ subscription.draws_paid_for }}</p>
+            <p class="mb-1"><strong>Amount paid:</strong> €{{ subscription.amount_paid }}</p>
+            <p class="mb-1"><strong>Expiry date:</strong> {{ subscription.expiry_date }}</p>
+            <p class="mb-1"><strong>Paid:</strong> {{ subscription.payment_completed|yesno:"Yes,No" }}</p>
+            <p class="mb-0"><strong>Status:</strong> {{ subscription.active|yesno:"Active,Pending" }}</p>
+        </div>
         {% empty %}
-            <p class="mb-0">You have no subscriptions yet.</p>
+        <p class="mb-0">You have no subscriptions yet.</p>
         {% endfor %}
     </div>
 </div>
