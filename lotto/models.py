@@ -73,7 +73,9 @@ class Subscription(models.Model):
     amount_paid = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     joined_at = models.DateField(default=timezone.now)
     expiry_date = models.DateField()
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
+    payment_completed = models.BooleanField(default=False)
+    stripe_checkout_session_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-joined_at']
