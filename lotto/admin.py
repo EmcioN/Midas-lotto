@@ -28,8 +28,17 @@ class DrawAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'monthly_summary', 'draws_paid_for', 'amount_paid', 'expiry_date', 'active')
-    list_filter = ('active', 'monthly_summary')
+    list_display = (
+        'user',
+        'monthly_summary',
+        'draws_paid_for',
+        'amount_paid',
+        'payment_completed',
+        'active',
+        'expiry_date',
+    )
+    list_filter = ('active', 'payment_completed', 'monthly_summary')
+    search_fields = ('user__username', 'user__email')
 
 
 admin.site.register(DrawImage)
