@@ -103,36 +103,41 @@ def join_subscription(request):
                 subscription.payment_completed = False
                 subscription.save()
 
-            checkout_session = stripe.checkout.Session.create(
-                mode='payment',
-                success_url=request.build_absolute_uri(reverse('subscription_success')) + '?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=request.build_absolute_uri(reverse('subscription_cancel')),
-                client_reference_id=str(subscription.id),
-                customer_email=request.user.email or None,
-                line_items=[
-                    {
-                        'price_data': {
-                            'currency': 'eur',
-                            'product_data': {
-                                'name': f'Midas Lotto subscription for {latest_month}',
+            try:
+                checkout_session = stripe.checkout.Session.create(
+                    mode='payment',
+                    success_url=request.build_absolute_uri(reverse('subscription_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+                    cancel_url=request.build_absolute_uri(reverse('subscription_cancel')),
+                    client_reference_id=str(subscription.id),
+                    customer_email=request.user.email or None,
+                    line_items=[
+                        {
+                            'price_data': {
+                                'currency': 'eur',
+                                'product_data': {
+                                    'name': f'Midas Lotto subscription for {latest_month}',
+                                },
+                                'unit_amount': int(amount_to_pay * 100),
                             },
-                            'unit_amount': int(amount_to_pay * 100),
-                        },
-                        'quantity': 1,
-                    }
-                ],
-                metadata={
-                    'subscription_id': str(subscription.id),
-                    'user_id': str(request.user.id),
-                    'monthly_summary_id': str(latest_month.id),
-                    'remaining_draws': str(remaining_draws),
-                },
-            )
+                            'quantity': 1,
+                        }
+                    ],
+                    metadata={
+                        'subscription_id': str(subscription.id),
+                        'user_id': str(request.user.id),
+                        'monthly_summary_id': str(latest_month.id),
+                        'remaining_draws': str(remaining_draws),
+                    },
+                )
 
-            subscription.stripe_checkout_session_id = checkout_session.id
-            subscription.save()
+                subscription.stripe_checkout_session_id = checkout_session.id
+                subscription.save()
 
-            return redirect(checkout_session.url, code=303)
+                return redirect(checkout_session.url, code=303)
+
+            except stripe.error.StripeError:
+                messages.error(request, 'There was a problem starting the Stripe checkout. Please try again.')
+                return redirect('join_subscription')
     else:
         form = SubscriptionJoinForm()
 
