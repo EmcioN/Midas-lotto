@@ -3,11 +3,15 @@
 {% block title %}Home | Midas Lotto{% endblock %}
 
 {% block content %}
-<section class="p-5 mb-4 bg-warning-subtle rounded-4 text-center">
-    <div class="container py-4">
-        <h1 class="display-4 fw-bold">Midas Lotto</h1>
-        <p class="lead">Join the workplace lotto club and track every draw, win, and subscription in one place.</p>
-        <a href="{% url 'register' %}" class="btn btn-dark btn-lg">Join Now</a>
+<section class="hero-section mb-4">
+    <div>        
+        {% if user.is_authenticated %}
+            <a href="{% url 'join_subscription' %}" class="btn btn-warning btn-lg me-2">Join Current Month</a>
+            <a href="{% url 'draw_list' %}" class="btn btn-outline-light btn-lg">View Draws</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn-warning btn-lg me-2">Create Account</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">Login</a>
+        {% endif %}
     </div>
 </section>
 
