@@ -18,9 +18,9 @@
 <section class="row g-4 mb-4">
     <div class="col-md-6">
         <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h2 class="h4">Current Month Winnings</h2>
-                <p class="display-6 mb-0">
+            <div class="card-body stats-card">
+                <h2 class="section-title h4">Current Month Winnings</h2>
+                <p class="stats-value mb-0">
                     €{{ latest_month.total_winnings|default:"0.00" }}
                 </p>
             </div>
@@ -28,9 +28,9 @@
     </div>
     <div class="col-md-6">
         <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h2 class="h4">Overall Winnings</h2>
-                <p class="display-6 mb-0">€{{ overall_winnings }}</p>
+            <div class="card-body stats-card">
+                <h2 class="section-title h4">Overall Winnings</h2>
+                <p class="stats-value mb-0">€{{ overall_winnings }}</p>
             </div>
         </div>
     </div>
