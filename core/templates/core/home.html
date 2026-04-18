@@ -38,32 +38,40 @@
 
 <section class="card shadow-sm mb-4">
     <div class="card-body">
-        <h2 class="h4">Current Draw</h2>
+        <h2 class="section-title h4">Current Draw</h2>
 
         {% if current_draw %}
-            <h3 class="h5">{{ current_draw.title }}</h3>
-            <p><strong>Date:</strong> {{ current_draw.draw_date }}</p>
-            <p><strong>Result:</strong> {{ current_draw.result_text|default:"No result added yet." }}</p>
-            <p><strong>Winnings:</strong> €{{ current_draw.winnings_amount }}</p>
-
-            {% if current_draw.images.first %}
-                <img src="{{ current_draw.images.first.image.url }}" class="img-fluid rounded mb-3" alt="{{ current_draw.title }}">
-            {% else %}
-                <div class="border rounded p-4 bg-light text-center mb-3">
-                    Image placeholder for current draw
+            <div class="row g-4 align-items-start">
+                <div class="col-md-5">
+                    {% if current_draw.images.first %}
+                        <img src="{{ current_draw.images.first.image.url }}" class="draw-image" alt="{{ current_draw.title }}">
+                    {% else %}
+                        <div class="border rounded p-5 bg-dark text-center">
+                            No image added yet
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
 
-            <h3 class="h5">Comments</h3>
-            {% for comment in current_draw.comments.all %}
-                <div class="border rounded p-3 mb-2">
-                    <strong>{{ comment.user.username }}</strong>
-                    <small class="text-muted d-block">{{ comment.created_at }}</small>
-                    <p class="mb-0">{{ comment.body }}</p>
+                <div class="col-md-7">
+                    <h3 class="h4">{{ current_draw.title }}</h3>
+                    <p><strong>Date:</strong> {{ current_draw.draw_date }}</p>
+                    <p><strong>Result:</strong> {{ current_draw.result_text|default:"No result added yet." }}</p>
+                    <p><strong>Winnings:</strong> €{{ current_draw.winnings_amount }}</p>
+
+                    <h4 class="h5 mt-4">Latest Comments</h4>
+                    {% for comment in current_draw.comments.all|slice:":3" %}
+                        <div class="border rounded p-3 mb-2">
+                            <strong>{{ comment.user.username }}</strong>
+                            <small class="text-muted d-block">{{ comment.created_at }}</small>
+                            <p class="mb-0">{{ comment.body }}</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted mb-0">No comments yet.</p>
+                    {% endfor %}
+
+                    <a href="{% url 'draw_detail' current_draw.id %}" class="btn btn-warning mt-3">Open Draw Details</a>
                 </div>
-            {% empty %}
-                <p class="text-muted mb-0">No comments yet.</p>
-            {% endfor %}
+            </div>
         {% else %}
             <p class="mb-0">No current draw has been selected yet.</p>
         {% endif %}
