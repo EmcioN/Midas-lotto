@@ -80,11 +80,13 @@
 
 <section class="card shadow-sm">
     <div class="card-body text-center">
-        <h2 class="h4">Subscriptions</h2>
+        <h2 class="section-title h4">Subscriptions</h2>
 
         {% if latest_month %}
-            <p><strong>Current month price:</strong> €{{ latest_month.subscription_price }}</p>
-            <p>There are 4 draws every month. If you join mid-month, you only pay for the remaining draws.</p>
+            <p class="mb-2"><strong>Current month price:</strong> €{{ latest_month.subscription_price }}</p>
+            <p class="text-muted">
+                There are 4 draws every month. If you join mid-month, you only pay for the remaining draws.
+            </p>
             <a href="{% url 'join_subscription' %}" class="btn btn-warning">Join Current Month</a>
         {% else %}
             <p>No active subscription month is available yet.</p>
