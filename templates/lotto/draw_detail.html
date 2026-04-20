@@ -15,42 +15,61 @@
 
         <h2 class="h5">Images</h2>
         {% for image in draw.images.all %}
-            <div class="mb-3">
-                <img src="{{ image.image.url }}" class="img-fluid rounded mb-2" alt="{{ image.caption }}">
-                {% if image.caption %}
-                    <p class="text-muted mb-0">{{ image.caption }}</p>
-                {% endif %}
-            </div>
+        <div class="mb-3">
+            <img src="{{ image.image.url }}" class="img-fluid rounded mb-2" alt="{{ image.caption }}">
+            {% if image.caption %}
+            <p class="text-muted mb-0">{{ image.caption }}</p>
+            {% endif %}
+        </div>
         {% empty %}
-            <p>No images added yet.</p>
+        <p>No images added yet.</p>
         {% endfor %}
 
         <hr>
 
         <h2 class="h5">Comments</h2>
         {% for comment in draw.comments.all %}
-            <div class="border rounded p-3 mb-2">
-                <strong>{{ comment.user.username }}</strong>
-                <small class="text-muted d-block">{{ comment.created_at }}</small>
-                <p class="mb-0">{{ comment.body }}</p>
-            </div>
+        <div class="border rounded p-3 mb-2">
+            <strong>{{ comment.user.username }}</strong>
+            <small class="text-muted d-block">{{ comment.created_at }}</small>
+            <p class="mb-0">{{ comment.body }}</p>
+        </div>
         {% empty %}
-            <p>No comments yet.</p>
+        <p>No comments yet.</p>
         {% endfor %}
 
         <hr>
 
         <h2 class="h5">Add Comment</h2>
         {% if user.is_authenticated %}
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-dark">Post Comment</button>
-            </form>
+        <form method="post">
+            {% csrf_token %}
+            {% extends "base.html" %}
+
+            {% block title %}Register | Midas Lotto{% endblock %}
+
+            {% block content %}
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h1 class="h3 mb-4">Create Account</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-warning">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+            <button type="submit" class="btn btn-dark">Post Comment</button>
+        </form>
         {% else %}
-            <p class="mb-0">
-                <a href="{% url 'login' %}">Log in</a> to post a comment.
-            </p>
+        <p class="mb-0">
+            <a href="{% url 'login' %}">Log in</a> to post a comment.
+        </p>
         {% endif %}
     </div>
 </div>

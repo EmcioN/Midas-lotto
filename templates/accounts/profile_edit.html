@@ -8,12 +8,35 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h1 class="h3 mb-4">Edit Profile</h1>
+
                 <form method="post">
                     {% csrf_token %}
-                    {{ user_form.as_p }}
-                    {{ profile_form.as_p }}
+
+                    {# User form fields #}
+                    {% for field in user_form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {# Profile form fields #}
+                    {% for field in profile_form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
                     <button type="submit" class="btn btn-dark">Save Changes</button>
                 </form>
+
             </div>
         </div>
     </div>
