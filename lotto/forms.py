@@ -9,7 +9,8 @@ class DrawCommentForm(forms.ModelForm):
         widgets = {
             'body': forms.Textarea(attrs={
                 'rows': 3,
-                'placeholder': 'Write your comment about this draw...'
+                'placeholder': 'Write your comment about this draw...',
+                'class': 'form-control',
             })
         }
 
