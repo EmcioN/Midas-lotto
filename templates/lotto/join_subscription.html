@@ -7,11 +7,8 @@
     <div class="col-md-7">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h1 class="h3 mb-4">Join Current Subscription</h1>
+                <h1 class="h3 mb-4">Join Subscription</h1>
 
-                <p><strong>Current month:</strong> {{ latest_month }}</p>
-                <p><strong>Full monthly price:</strong> €{{ latest_month.subscription_price }}</p>
-                <p><strong>Remaining draws:</strong> {{ remaining_draws }}</p>
                 <p><strong>Amount to pay now:</strong> €{{ amount_to_pay }}</p>
 
                 <p class="text-muted">
@@ -20,27 +17,24 @@
 
                 <form method="post">
                     {% csrf_token %}
-                    {% extends "base.html" %}
 
-                    {% block title %}Register | Midas Lotto{% endblock %}
-
-                    {% block content %}
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h1 class="h3 mb-4">Create Account</h1>
-                                    <form method="post">
-                                        {% csrf_token %}
-                                        {{ form.as_p }}
-                                        <button type="submit" class="btn btn-warning">Register</button>
-                                    </form>
-                                </div>
-                            </div>
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
                         </div>
-                    </div>
-                    {% endblock %}
-                    <button type="submit" class="btn btn-warning">Confirm and Join</button>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-warning">Continue</button>
                 </form>
             </div>
         </div>
