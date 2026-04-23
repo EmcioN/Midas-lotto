@@ -165,6 +165,22 @@ def subscription_success(request):
         try:
             session = stripe.checkout.Session.retrieve(session_id)
             payment_status = session.payment_status
+
+            if payment_status == 'paid':
+                subscription = Subscription.objects.filter(
+                    stripe_checkout_session_id=session_id,
+                    user=request.user
+                ).first()
+
+                if subscription and not subscription.payment_completed:
+                    subscription.payment_completed = True
+                    subscription.active = True
+                    subscription.save()
+
+                    profile = Profile.objects.get(user=subscription.user)
+                    profile.subscription_expiry = subscription.expiry_date
+                    profile.save()
+
         except stripe.error.StripeError:
             payment_status = None
 
