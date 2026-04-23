@@ -61,8 +61,11 @@ def join_subscription(request):
         monthly_summary=latest_month
     ).first()
 
-    if existing_subscription and existing_subscription.payment_completed:
-        messages.info(request, 'You already joined the current month.')
+    if existing_subscription:
+        if existing_subscription.payment_completed:
+            messages.info(request, 'You already have a paid subscription for the current month.')
+        else:
+            messages.info(request, 'You already started checkout for the current month. Please complete that payment or contact support.')
         return redirect('profile')
 
     remaining_draws = Subscription.calculate_remaining_draws(latest_month)
