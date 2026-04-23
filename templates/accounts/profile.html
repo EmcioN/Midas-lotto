@@ -35,7 +35,11 @@
             <p class="mb-1"><strong>Amount paid:</strong> €{{ subscription.amount_paid }}</p>
             <p class="mb-1"><strong>Expiry date:</strong> {{ subscription.expiry_date }}</p>
             <p class="mb-1"><strong>Paid:</strong> {{ subscription.payment_completed|yesno:"Yes,No" }}</p>
-            <p class="mb-0"><strong>Status:</strong> {{ subscription.active|yesno:"Active,Pending" }}</p>
+            {% if subscription.payment_completed %}
+            <p class="mb-0"><strong>Status:</strong> Active</p>
+            {% else %}
+            <p class="mb-0"><strong>Status:</strong> Awaiting payment confirmation</p>
+            {% endif %}
         </div>
         {% empty %}
         <p class="mb-0">You have no subscriptions yet.</p>
