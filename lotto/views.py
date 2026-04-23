@@ -158,7 +158,7 @@ def subscription_success(request):
     if session_id:
         try:
             session = stripe.checkout.Session.retrieve(session_id)
-            payment_status = session.get('payment_status')
+            payment_status = session.payment_status
         except stripe.error.StripeError:
             payment_status = None
 
@@ -190,7 +190,7 @@ def stripe_webhook(request):
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        session_id = session.get('id')
+        session_id = session['id']
 
         subscription = Subscription.objects.filter(
             stripe_checkout_session_id=session_id
@@ -204,5 +204,4 @@ def stripe_webhook(request):
             profile = Profile.objects.get(user=subscription.user)
             profile.subscription_expiry = subscription.expiry_date
             profile.save()
-
     return HttpResponse(status=200)
