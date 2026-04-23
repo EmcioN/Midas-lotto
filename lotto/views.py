@@ -11,8 +11,11 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+import logging
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+logger = logging.getLogger(__name__)
 
 def draw_list(request):
     draws = Draw.objects.select_related('monthly_summary').all()
@@ -177,6 +180,8 @@ def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
 
+    logger.info("Stripe webhook received")
+
     try:
         event = stripe.Webhook.construct_event(
             payload,
@@ -184,19 +189,29 @@ def stripe_webhook(request):
             settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError:
+        logger.exception("Invalid Stripe webhook payload")
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError:
+        logger.exception("Stripe webhook signature verification failed")
         return HttpResponse(status=400)
+
+    logger.info("Stripe webhook type: %s", event['type'])
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        session_id = session['id']
+        session_id = session.get('id')
+
+        logger.info("Checkout session completed: %s", session_id)
 
         subscription = Subscription.objects.filter(
             stripe_checkout_session_id=session_id
         ).first()
 
-        if subscription and not subscription.payment_completed:
+        if not subscription:
+            logger.warning("No subscription found for session %s", session_id)
+            return HttpResponse(status=200)
+
+        if not subscription.payment_completed:
             subscription.payment_completed = True
             subscription.active = True
             subscription.save()
@@ -204,4 +219,7 @@ def stripe_webhook(request):
             profile = Profile.objects.get(user=subscription.user)
             profile.subscription_expiry = subscription.expiry_date
             profile.save()
+
+            logger.info("Subscription activated for user %s", subscription.user_id)
+
     return HttpResponse(status=200)
