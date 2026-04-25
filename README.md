@@ -206,6 +206,12 @@ Midas-Lotto/
 
 ---
 
+## Wireframes
+
+The following wireframes were created during the planning stage.
+
+---
+
 ## Features
 
 ### Authentication
@@ -257,3 +263,99 @@ Due to time constraints, some planned features were not implemented:
 These features are planned for future development.
 
 ---
+
+## Testing
+
+For all testing, please refer to the [TESTING.md](TESTING.md) file.
+
+---
+
+## Technologies Used
+
+### Languages
+
+- [HTML](https://en.wikipedia.org/wiki/HTML5)  
+- [CSS](https://en.wikipedia.org/wiki/CSS)  
+- [Python](https://www.python.org/)  
+- JavaScript (used via Bootstrap components)  
+
+---
+
+### Frameworks and Libraries
+
+- [Django](https://www.djangoproject.com/) - Backend framework used to build the application  
+- [Bootstrap](https://getbootstrap.com/) - Used for responsive design and styling  
+- [Stripe](https://stripe.com/) - Used for secure payment processing  
+- [Cloudinary](https://cloudinary.com/) - Used for media storage and image hosting  
+- [Gunicorn](https://gunicorn.org/) - WSGI server used for deployment  
+- [Psycopg](https://www.psycopg.org/) - PostgreSQL database adapter  
+- [Google Fonts](https://fonts.google.com) - Used for typography  
+- [Balsamiq](https://balsamiq.com/) - Used to create wireframes  
+
+---
+
+### Tools
+
+- [GitHub](https://github.com/) - Used for version control and repository hosting  
+- [VS Code](https://code.visualstudio.com/) - Development environment  
+- [Heroku](https://www.heroku.com/) - Used for deployment  
+- [PostgreSQL](https://www.postgresql.org/) - Production database  
+- [W3C HTML Validator](https://validator.w3.org/) - Used to validate HTML  
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) - Used to validate CSS  
+- [Chrome DevTools](https://developer.chrome.com/docs/devtools/) - Used for debugging and testing
+
+---
+
+### Deployment
+
+Local Development
+
+- Go to Github repo [here](https://github.com/EmcioN/Midas-lotto) 
+press **< CODE >**, and press COPY.
+or **FORK** my repo
+
+![clone](/doc/img/clonefork.png)
+
+- Go to your github repositories and create new repo, call it whatever you like. Press Create Repository it will lead you to another page, and press Gitpod it should open workspace for you
+- Now you need to download all libraries and frameworks used in this project. Use command : 
+```
+pip3 install -r requirements.txt
+```
+- Log in to Heroku or create a new account.
+- Click the New button in the top right corner and select Create New App.
+
+![step](/doc/img/step1.png)
+
+- Choose a unique name for your app and select the region you want it to run in, then click Create App.
+
+![step](/doc/img/step2.png)
+
+- Go to the Deploy tab and click on the Settings tab.
+
+![step](/doc/img/step3.png)
+
+- Scroll down to the Buildpack section and click Add Buildpack.
+
+![step](/doc/img/step4.png)
+
+- Select "python" and click Save Changes.
+- Repeat step and add "node.js" as well.
+- Make sure the Buildpacks are in the correct order by clicking and dragging them if necessary.
+
+![step](/doc/img/step5.png)
+
+- Go back to the top of the page and select the Deploy tab again.
+
+![step](/doc/img/step6.png)
+
+- Choose Github as the deployment method and confirm that you want to connect to your Github account.
+
+![step](/doc/img/step7.png)
+
+- Search for your repository name and click the connect button.
+- Scroll to the bottom of the deploy page and select your preferred deployment type.
+- You can choose to enable automatic deploys for automatic deployment when you push updates to Github.
+
+![step](/doc/img/step8.png)
+
+- That's it, your site should now be deployed!
