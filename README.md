@@ -120,55 +120,55 @@ Navigation is consistent across all pages using a fixed navbar.
 
 ### Register Page
 
-![Register](doc/img/register.png)
+![Register](doc/img/reg.png)
 
 ---
 
 ### Homepage
 
-![Homepage](doc/img/homepage.png)
+![Homepage](doc/img/mainp.png)
 
 ---
 
 ### Draw List Page
 
-![Draw List](doc/img/draw_list.png)
+![Draw List](doc/img/draws.png)
 
 ---
 
 ### Draw Detail Page
 
-![Draw Detail](doc/img/draw_detail.png)
+![Draw Detail](doc/img/drawd.png)
 
 ---
 
 ### Comment Section
 
-![Comments](doc/img/comments.png)
+![Comments](doc/img/com.png)
 
 ---
 
 ### Subscription Page
 
-![Subscription](doc/img/subscription.png)
+![Subscription](doc/img/joins.png)
 
 ---
 
 ### Stripe Checkout
 
-![Stripe Checkout](doc/img/stripe_checkout.png)
+![Stripe Checkout](doc/img/stripe.png)
 
 ---
 
 ### Payment Success Page
 
-![Success](doc/img/payment_success.png)
+![Success](doc/img/pays.png)
 
 ---
 
 ### Payment Cancel Page
 
-![Cancel](doc/img/payment_cancel.png)
+![Cancel](doc/img/paycancel.png)
 
 ---
 
@@ -180,13 +180,13 @@ Navigation is consistent across all pages using a fixed navbar.
 
 ### Edit Profile Page
 
-![Edit Profile](doc/img/edit_profile.png)
+![Edit Profile](doc/img/profileedit.png)
 
 ---
 
 ### Admin Panel
 
-![Admin](doc/img/admin.png)
+![Admin](doc/img/adminp.png)
 
 ---
 
@@ -209,6 +209,14 @@ Midas-Lotto/
 ## Wireframes
 
 The following wireframes were created during the planning stage.
+
+![Wireframes](doc/img/wire1.png)
+
+![Wireframes](doc/img/wire2.png)
+
+![Wireframes](doc/img/wire3.png)
+
+![Wireframes](doc/img/wire4.png)
 
 ---
 
@@ -359,3 +367,18 @@ pip3 install -r requirements.txt
 ![step](/doc/img/step8.png)
 
 - That's it, your site should now be deployed!
+
+---
+## Credits
+- [Code Institute](https://codeinstitute.net/ie/): A special acknowledgment to the Code Institute. Revisiting lessons there proved invaluable, reinforcing core concepts and strengthening my foundation.
+
+- [Stack Overflow](https://stackoverflow.co/): An essential resource during this journey. The community's expertise and shared experiences on Stack Overflow were immensely beneficial in navigating challenges and troubleshooting issues.
+
+- [YouTube Tutorials](https://www.youtube.com/): Many thanks to the numerous educators and developers on YouTube. Their shared knowledge and step-by-step tutorials provided clarity and depth to my understanding.
+
+- I was helping myself with resources gathered during building my different projects. 
+
+- A big thank you to my co-worker. The idea is to automate the entire process. She handles that, and I wanted to help her out a bit. We coordinated the website's style together, and she provided me with a hero image.
+
+### Mentorship
+Special thanks to my mentor for guidance, feedback, and support throughout the project.
