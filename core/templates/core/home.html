@@ -3,7 +3,7 @@
 {% block title %}Home | Midas Lotto{% endblock %}
 
 {% block content %}
-<section class="hero-section mb-4">
+<div class="hero-section mb-4">
     <div>        
         {% if user.is_authenticated %}
             <a href="{% url 'join_subscription' %}" class="btn btn-warning btn-lg me-2">Join Current Month</a>
@@ -13,7 +13,7 @@
             <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">Login</a>
         {% endif %}
     </div>
-</section>
+</div>
 
 <section class="row g-4 mb-4">
     <div class="col-md-6">
