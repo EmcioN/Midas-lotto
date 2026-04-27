@@ -17,6 +17,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 logger = logging.getLogger(__name__)
 
+
 def draw_list(request):
     draws = Draw.objects.select_related('monthly_summary').all()
     return render(request, 'lotto/draw_list.html', {'draws': draws})
@@ -156,6 +157,7 @@ def join_subscription(request):
     }
     return render(request, 'lotto/join_subscription.html', context)
 
+
 @login_required
 def subscription_success(request):
     session_id = request.GET.get('session_id')
@@ -190,9 +192,11 @@ def subscription_success(request):
     }
     return render(request, 'lotto/subscription_success.html', context)
 
+
 @login_required
 def subscription_cancel(request):
     return render(request, 'lotto/subscription_cancel.html')
+
 
 @csrf_exempt
 def stripe_webhook(request):

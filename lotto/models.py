@@ -26,6 +26,7 @@ class MonthlySummary(models.Model):
         remaining = 4 - self.draws_completed()
         return max(remaining, 0)
 
+
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
         MonthlySummary,
@@ -58,6 +59,7 @@ class Draw(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+
 class DrawImage(models.Model):
     draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='draw_images/')
@@ -65,6 +67,7 @@ class DrawImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.draw.title}"
+
 
 class DrawComment(models.Model):
     draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='comments')
@@ -77,6 +80,7 @@ class DrawComment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.draw.title}"
+
 
 class Subscription(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')

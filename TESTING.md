@@ -194,3 +194,235 @@ All core functionality of the Midas Lotto application was manually tested to ens
 | Firefox | Site works correctly | Pass |
 
 ---
+
+## User Stories Validation
+
+All defined user stories for the Midas Lotto project have been successfully fulfilled through manual testing.
+
+| User Story | Evidence |
+|-----------|----------|
+| As a user, I want to register an account so that I can join the lotto | Registration and login tested successfully |
+| As a user, I want to log in so that I can access my profile and subscriptions | Authentication and session handling tested |
+| As a user, I want to view the current draw so I can see the latest results | Homepage current draw display tested |
+| As a user, I want to view all draws so that I can check past results and winnings | Draw list page tested |
+| As a user, I want to view a single draw in detail so I can see results, images, and comments | Draw detail page tested |
+| As a user, I want to comment on a draw so that I can share my thoughts with others | Comment creation tested |
+| As a user, I want to join the current month subscription so that I can participate in the lotto | Subscription flow tested |
+| As a user, I want to pay for my subscription securely so that my payment is handled safely | Stripe Checkout and webhook tested |
+| As a non-authenticated user, I am restricted from protected pages | Access control and login redirects tested |
+
+---
+
+## Html Validation
+
+### Login Page
+
+![List](/doc/img/loginvalid.png)
+
+### Main Page
+
+![List](/doc/img/mainvalid.png)
+
+### REgister Page
+
+![List](/doc/img/registervalid.png)
+
+### Draw Page
+
+![List](/doc/img/drawvalid.png)
+
+### Draw Detail Page
+
+![List](/doc/img/drawdvalid.png)
+
+### Profile Page
+
+![List](/doc/img/profilevalid.png)
+
+### Profile Edit Page
+
+![List](/doc/img/editvalid.png)
+
+### Join Subscription Page
+
+![List](/doc/img/joinsvalid.png)
+
+### Success page
+
+![List](/doc/img/svalid.png)
+
+### P404 Page
+
+![List](/doc/img/p404v.png)
+
+## CSS Validation 
+
+![List](/doc/img/cssvalid.png)
+
+## Python Validation
+
+### Accounts
+
+### apps.py
+
+![List](/doc/img/accappv.png)
+
+### forms.py
+
+![List](/doc/img/accformsv.png)
+
+### models.py
+
+![List](/doc/img/accmodelsv.png)
+
+### signals.py
+
+![List](/doc/img/accsignalsv.png)
+
+### test.py
+
+![List](/doc/img/acctestv.png)
+
+### urls.py
+
+![List](/doc/img/accurlsv.png)
+
+### views.py
+
+![List](/doc/img/accviewsv.png)
+
+### Config
+
+### asgi.py
+
+![List](/doc/img/conasgiv.png)
+
+### settings.py
+
+![List](/doc/img/consetv.png)
+
+### urls.py
+
+![List](/doc/img/conuv.png)
+
+### wsgi.py
+
+![List](/doc/img/conwsgiv.png)
+
+### Core
+
+### apps.py
+
+![List](/doc/img/coreappsv.png)
+
+### test.py
+
+![List](/doc/img/coretestv.png)
+
+### urls.py
+
+![List](/doc/img/coreurlsv.png)
+
+### views.py
+
+![List](/doc/img/coreviewsv.png)
+
+### Lotto
+
+### admin.py
+
+![List](/doc/img/lottoadminv.png)
+
+### apps.py
+
+![List](/doc/img/lottoappsv.png)
+
+### forms.py
+
+![List](/doc/img/lottoformsv.png)
+
+### models.py
+
+![List](/doc/img/lottomodelsv.png)
+
+### test.py
+
+![List](/doc/img/lottotestv.png)
+
+### urls.py
+
+![List](/doc/img/lottourlsv.png)
+
+### views.py
+
+![List](/doc/img/lottoviewsv.png)
+
+## Manual Testing and Fixes
+
+Manual testing was carried out throughout the development of the Midas Lotto project. Features were tested after implementation, during debugging, and again after deployment to ensure consistency between local and production environments.
+
+---
+
+### Development Issues Found and Fixed
+
+- **Template structure errors**  
+  Some templates caused errors such as `'block tag with name title appears more than once'`. This occurred when full templates were accidentally nested inside other templates. The issue was resolved by ensuring each template contains only one `{% extends %}` and one set of `{% block %}` tags.
+
+- **Missing database tables (migrations issue)**  
+  On deployment, errors such as `relation "lotto_monthlysummary" does not exist` occurred. This was caused by migrations not being applied on Heroku. The issue was fixed by running migrations on the production database.
+
+- **Incorrect Stripe object usage**  
+  An error occurred when using `.get()` on Stripe session objects (`AttributeError: get`). This was fixed by accessing Stripe data using attributes (e.g., `session.payment_status`) instead of dictionary-style access.
+
+- **Whitespace and indentation problems**  
+  Python indentation errors caused views to fail. These were resolved by correcting code structure and consistent formatting.
+
+- **Missing or incorrect imports**  
+  Some views failed due to missing imports. These were fixed by reviewing error messages and adding the required imports.
+
+- **Spelling mistakes and incorrect naming**  
+  Errors in variable names and template references caused pages to break. These were corrected by ensuring consistent naming across files.
+
+---
+
+### Form and Input Testing
+
+- Forms initially allowed invalid or empty input  
+- Help text was not properly displayed, causing accessibility warnings  
+- Error messages were unclear  
+
+These issues were fixed by improving form validation, displaying help text, and adding clear error feedback.
+
+---
+
+### Payment Testing Issues
+
+- Stripe payments succeeded but subscriptions remained pending  
+- Webhook configuration was missing during early testing  
+- Subscription status was not updating after payment  
+
+These issues were resolved by:
+
+- Implementing a Stripe webhook  
+- Verifying webhook signatures  
+- Updating subscription status after `checkout.session.completed` events  
+
+---
+
+### Deployment Testing Issues
+
+- Errors such as `DisallowedHost` occurred due to missing `ALLOWED_HOSTS` configuration  
+- CSRF errors occurred due to missing `CSRF_TRUSTED_ORIGINS`  
+- Environment variables were not configured correctly on Heroku  
+
+These issues were resolved by properly setting environment variables and updating Django settings for production.
+
+---
+
+### Static and Media Files
+
+- Static files did not load correctly after deployment  
+- The issue was caused by incorrect configuration and missing `collectstatic`  
+
+This was resolved by configuring static files correctly and running `collectstatic`.
+
