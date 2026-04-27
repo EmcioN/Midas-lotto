@@ -24,7 +24,8 @@ It allows users to subscribe to monthly draws, track winnings, interact via comm
   * [Colours](#colours)  
   * [Structure](#structure)  
   * [Project Structure](#project-structure)  
-  * [Wireframes](#wireframes)  
+  * [Wireframes](#wireframes)
+  * [Data Schema](#data-schema)  
 * [Features](#features)  
 * [Future Plans](#future-plans)
 * [Testing](#testing)  
@@ -308,8 +309,7 @@ The schema separates authentication, lotto data, payment records, and user inter
 ## Future Plans
 
 Due to time constraints, some planned features were not implemented:
-
-- Edit and delete comments  
+ 
 - Email notifications for new draws  
 - Admin dashboard with statistics  
 - Multiple subscription tiers  
