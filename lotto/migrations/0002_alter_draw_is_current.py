@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lotto', '0001_initial'),
+        ("lotto", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='draw',
-            name='is_current',
-            field=models.BooleanField(default=False, help_text='Only one draw should be marked as current at a time.'),
+            model_name="draw",
+            name="is_current",
+            field=models.BooleanField(
+                default=False,
+                help_text="Only one draw should be marked as current at a time.",
+            ),
         ),
     ]

@@ -13,8 +13,8 @@ class MonthlySummary(models.Model):
     notes = models.TextField(blank=True)
 
     class Meta:
-        unique_together = ('month', 'year')
-        ordering = ['-year', '-month']
+        unique_together = ("month", "year")
+        ordering = ["-year", "-month"]
 
     def __str__(self):
         return f"{self.month:02d}/{self.year}"
@@ -29,9 +29,7 @@ class MonthlySummary(models.Model):
 
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
-        MonthlySummary,
-        on_delete=models.CASCADE,
-        related_name='draws'
+        MonthlySummary, on_delete=models.CASCADE, related_name="draws"
     )
     title = models.CharField(max_length=200)
     draw_date = models.DateField()
@@ -39,12 +37,11 @@ class Draw(models.Model):
     result_text = models.TextField(blank=True)
     winnings_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_current = models.BooleanField(
-        default=False,
-        help_text='Only one draw should be marked as current at a time.'
+        default=False, help_text="Only one draw should be marked as current at a time."
     )
 
     class Meta:
-        ordering = ['-draw_date', '-draw_number']
+        ordering = ["-draw_date", "-draw_number"]
 
     def __str__(self):
         return f"{self.title} ({self.draw_date})"
@@ -53,7 +50,9 @@ class Draw(models.Model):
         if self.is_current:
             existing_current = Draw.objects.filter(is_current=True).exclude(pk=self.pk)
             if existing_current.exists():
-                raise ValidationError('Only one draw can be marked as current at a time.')
+                raise ValidationError(
+                    "Only one draw can be marked as current at a time."
+                )
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -61,8 +60,8 @@ class Draw(models.Model):
 
 
 class DrawImage(models.Model):
-    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='draw_images/')
+    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="draw_images/")
     caption = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
@@ -70,21 +69,25 @@ class DrawImage(models.Model):
 
 
 class DrawComment(models.Model):
-    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name='comments')
+    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.draw.title}"
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')
-    monthly_summary = models.ForeignKey(MonthlySummary, on_delete=models.CASCADE, related_name='subscriptions')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions"
+    )
+    monthly_summary = models.ForeignKey(
+        MonthlySummary, on_delete=models.CASCADE, related_name="subscriptions"
+    )
     draws_paid_for = models.PositiveSmallIntegerField(default=4)
     amount_paid = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     joined_at = models.DateField(default=timezone.now)
@@ -94,15 +97,15 @@ class Subscription(models.Model):
     stripe_checkout_session_id = models.CharField(max_length=255, blank=True)
 
     class Meta:
-        ordering = ['-joined_at']
-        unique_together = ('user', 'monthly_summary')
+        ordering = ["-joined_at"]
+        unique_together = ("user", "monthly_summary")
 
     def __str__(self):
         return f"{self.user.username} - {self.monthly_summary}"
 
     @staticmethod
     def calculate_price(full_month_price, draws_paid_for):
-        price_per_draw = Decimal(full_month_price) / Decimal('4')
+        price_per_draw = Decimal(full_month_price) / Decimal("4")
         return price_per_draw * Decimal(draws_paid_for)
 
     @staticmethod

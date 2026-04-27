@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lotto', '0003_monthlysummary_subscription_price'),
+        ("lotto", "0003_monthlysummary_subscription_price"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='subscription',
-            name='payment_completed',
+            model_name="subscription",
+            name="payment_completed",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='subscription',
-            name='stripe_checkout_session_id',
+            model_name="subscription",
+            name="stripe_checkout_session_id",
             field=models.CharField(blank=True, max_length=255),
         ),
         migrations.AlterField(
-            model_name='subscription',
-            name='active',
+            model_name="subscription",
+            name="active",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -61,14 +61,14 @@ Users of Midas Lotto want to:
 - As a user, I want to join the current month subscription so that I can participate in the lotto.
 - As a user, I want to pay for my subscription securely so that my payment is handled safely.
 
-
-
 ### Site Owner Goals
+
 The site owner wants to:
-- Improve communication between shifts
-- Reduce operational errors caused by missing information
-- Enforce structured handover data
-- Maintain a secure, authenticated system
+- Provide a clear and transparent lottery system for all users  
+- Manage monthly draws and results efficiently  
+- Automate subscription handling and reduce manual work  
+- Ensure secure and reliable payment processing  
+- Keep accurate records of winnings and subscriptions
 
 ## Design Choices
 
@@ -217,6 +217,53 @@ The following wireframes were created during the planning stage.
 ![Wireframes](doc/img/wire3.png)
 
 ![Wireframes](doc/img/wire4.png)
+
+---
+
+## Data Schema
+
+The application uses a relational PostgreSQL database with Django ORM models.
+
+### User
+Django’s built-in User model handles authentication.
+
+Relationships:
+- One User can have one Profile.
+- One User can create many Comments.
+- One User can have many Subscriptions.
+
+### Draw
+Stores each lottery draw.
+
+Fields include:
+- title
+- draw date
+- result
+- winnings
+- current draw status
+
+Relationships:
+- One Draw can have many Comments.
+- One Draw can have many Draw Images.
+
+### Comment
+Stores user comments on draw detail pages.
+
+Relationships:
+- Each Comment belongs to one User.
+- Each Comment belongs to one Draw.
+
+### Subscription
+Stores user lotto participation and payment status.
+
+Relationships:
+- Each Subscription belongs to one User.
+- Payment status is updated through Stripe webhook events.
+
+### Monthly Summary
+Stores monthly totals and subscription pricing information.
+
+The schema separates authentication, lotto data, payment records, and user interaction data into logical entities. This avoids duplication and keeps the application maintainable.
 
 ---
 

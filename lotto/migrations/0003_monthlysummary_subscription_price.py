@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lotto', '0002_alter_draw_is_current'),
+        ("lotto", "0002_alter_draw_is_current"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='monthlysummary',
-            name='subscription_price',
+            model_name="monthlysummary",
+            name="subscription_price",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=8),
         ),
     ]
