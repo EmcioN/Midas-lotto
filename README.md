@@ -278,6 +278,8 @@ Stores monthly totals and subscription pricing information.
 
 The schema separates authentication, lotto data, payment records, and user interaction data into logical entities. This avoids duplication and keeps the application maintainable.
 
+![Data Schema](doc/img/schema.png)
+
 ---
 
 ## Features
