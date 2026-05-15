@@ -81,6 +81,9 @@ All core functionality of the Midas Lotto application was manually tested to ens
 | Comments | Submit empty comment | Validation error is displayed | Pass |
 | Comments | Try to comment while logged out | User is asked to log in | Pass |
 | Comments | View comments on draw detail page | Comments are displayed with username and date | Pass |
+| Delete own comment | Logged-in user deletes their own comment | Comment is removed and user is redirected to draw detail page | Pass |
+| Defensive delete | Different logged-in user tries direct delete URL | 403 forbidden response and comment remains | Pass |
+| Anonymous delete | Logged-out user visits delete URL | User is redirected to login page | Pass |
 
 ---
 
@@ -254,6 +257,10 @@ All defined user stories for the Midas Lotto project have been successfully fulf
 ### P404 Page
 
 ![List](/doc/img/p404v.png)
+
+### Delete comment page
+
+![List](/doc/img/delete.png)
 
 ## CSS Validation 
 

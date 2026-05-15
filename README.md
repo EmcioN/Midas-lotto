@@ -147,6 +147,16 @@ Navigation is consistent across all pages using a fixed navbar.
 
 ![Comments](doc/img/com.png)
 
+### Delete comment button
+
+![Comments](doc/img/deletebutton.png)
+
+---
+
+### Delete copmment page
+
+![Comments](doc/img/deletepage.png)
+
 ---
 
 ### Subscription Page
@@ -283,6 +293,10 @@ The schema separates authentication, lotto data, payment records, and user inter
 - View detailed draw information  
 - Comment on draws  
 - See images related to each draw  
+
+### Comment Management
+
+- Authenticated users can create comments on draw pages and delete only their own comments. Delete actions use a confirmation page and CSRF-protected POST request to prevent accidental or unauthorised deletion.
 
 ### Subscription System
 - Join monthly lotto subscription  
