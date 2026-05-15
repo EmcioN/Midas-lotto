@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from accounts.models import Profile
 from .forms import DrawCommentForm, SubscriptionJoinForm
-from .models import Draw, MonthlySummary, Subscription
+from .models import Draw, MonthlySummary, Subscription, DrawComment
 import stripe
 from django.conf import settings
 from django.http import HttpResponse
@@ -256,3 +256,26 @@ def stripe_webhook(request):
             logger.info("Subscription activated for user %s", subscription.user_id)
 
     return HttpResponse(status=200)
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(DrawComment, id=comment_id)
+
+    if comment.user != request.user and not request.user.is_superuser:
+        messages.error(
+            request,
+            "You do not have permission to delete this comment."
+        )
+        return redirect("draw_detail", draw_id=comment.draw.id)
+
+    if request.method == "POST":
+        draw_id = comment.draw.id
+        comment.delete()
+        messages.success(request, "Comment deleted successfully.")
+        return redirect("draw_detail", draw_id=draw_id)
+
+    return render(
+        request,
+        "lotto/delete_comment.html",
+        {"comment": comment},
+    )
