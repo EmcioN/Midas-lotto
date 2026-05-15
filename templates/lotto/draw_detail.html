@@ -1,22 +1,22 @@
-{% extends "base.html" %}
-
-{% block title %}{{ draw.title }} | Midas Lotto{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}{{ draw.title }} | Midas Lotto
+{%endblock %} {% block content %}
 <div class="card shadow-sm">
     <div class="card-body">
         <h1 class="h3 mb-3">{{ draw.title }}</h1>
         <p><strong>Date:</strong> {{ draw.draw_date }}</p>
         <p><strong>Draw number:</strong> {{ draw.draw_number }}</p>
-        <p><strong>Result:</strong> {{ draw.result_text|default:"No result added yet." }}</p>
+        <p>
+            <strong>Result:</strong> {{ draw.result_text|default:"No result added
+            yet." }}
+        </p>
         <p><strong>Winnings:</strong> €{{ draw.winnings_amount }}</p>
 
-        <hr>
+        <hr />
 
         <h2 class="h5">Images</h2>
         {% for image in draw.images.all %}
         <div class="mb-3">
-            <img src="{{ image.image.url }}" class="img-fluid rounded mb-2" alt="{{ image.caption }}">
+            <img src="{{ image.image.url }}" class="img-fluid rounded mb-2" alt="{{ image.caption }}" />
             {% if image.caption %}
             <p class="text-muted mb-0">{{ image.caption }}</p>
             {% endif %}
@@ -25,40 +25,38 @@
         <p>No images added yet.</p>
         {% endfor %}
 
-        <hr>
+        <hr />
 
         <h2 class="h5">Comments</h2>
         {% for comment in draw.comments.all %}
         <div class="border rounded p-3 mb-2">
             <strong>{{ comment.user.username }}</strong>
             <small class="text-muted d-block">{{ comment.created_at }}</small>
-            <p class="mb-0">{{ comment.body }}</p>
+            <p class="mb-2">{{ comment.body }}</p>
+
+            {% if user == comment.user or user.is_superuser %}
+            <a href="{% url 'delete_comment' comment.id %}" class="btn btn-danger btn-sm">
+                Delete
+            </a>
+            {% endif %}
         </div>
         {% empty %}
         <p>No comments yet.</p>
         {% endfor %}
 
-        <hr>
+        <hr />
 
         <h2 class="h5">Add Comment</h2>
         {% if user.is_authenticated %}
         <form method="post">
-            {% csrf_token %}
-
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger">
-                    {{ form.non_field_errors }}
-                </div>
-            {% endif %}
-
-            {% for field in form %}
-                <div class="mb-3">
-                    {{ field.label_tag }}
-                    {{ field }}
-                    {% if field.errors %}
-                        <div class="text-danger small mt-1">{{ field.errors }}</div>
-                    {% endif %}
-                </div>
+            {% csrf_token %} {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %} {% for field in form %}
+            <div class="mb-3">
+                {{ field.label_tag }} {{ field }} {% if field.errors %}
+                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                {% endif %}
+            </div>
             {% endfor %}
 
             <button type="submit" class="btn btn-dark">Post Comment</button>
