@@ -6,6 +6,7 @@ from .views import (
     subscription_success,
     subscription_cancel,
     stripe_webhook,
+    delete_comment,
 )
 
 urlpatterns = [
@@ -15,4 +16,9 @@ urlpatterns = [
     path("subscriptions/success/", subscription_success, name="subscription_success"),
     path("subscriptions/cancel/", subscription_cancel, name="subscription_cancel"),
     path("stripe/webhook/", stripe_webhook, name="stripe_webhook"),
+    path(
+    "comments/<int:comment_id>/delete/",
+    delete_comment,
+    name="delete_comment",
+    ),
 ]
