@@ -383,7 +383,7 @@ Manual testing was carried out throughout the development of the Midas Lotto pro
 | Delete confirmation page | Click delete on own comment | Confirmation page opens before deletion | Pass |
 | Confirm delete | Submit delete confirmation form | Comment is removed from the draw detail page | Pass |
 | Cancel delete | Click cancel on delete confirmation page | User returns to draw detail page and comment remains | Pass |
-| Direct URL protection | Different logged-in user enters another user's delete URL | 403 forbidden response is shown and comment remains | Pass |
+| Direct URL protection | Different logged-in user enters another user's delete URL | error message is shown and comment remains | Pass |
 | Anonymous protection | Logged-out user enters delete URL | User is redirected to login page | Pass |
 
 

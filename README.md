@@ -235,50 +235,136 @@ The following wireframes were created during the planning stage.
 
 ## Data Schema
 
-The application uses a relational PostgreSQL database with Django ORM models.
+The application uses a relational PostgreSQL database with Django ORM models. The schema separates authentication, user profile data, lotto draw information, payment records, and user interaction data into logical entities. This helps avoid duplication and makes the application easier to maintain.
+
+![Data Schema](doc/img/schema.png)
 
 ### User
-Django’s built-in User model handles authentication.
+
+The project uses Django's built-in User model to handle authentication, registration, login and account access.
 
 Relationships:
+
 - One User can have one Profile.
-- One User can create many Comments.
+- One User can create many Draw Comments.
 - One User can have many Subscriptions.
 
-### Draw
-Stores each lottery draw.
+### Profile
+
+The Profile model stores additional information about each user.
 
 Fields include:
+
+- full name
+- department
+- subscription expiry date
+
+Relationships:
+
+- Each Profile belongs to one User.
+- One User can have one Profile.
+
+### Monthly Summary
+
+The Monthly Summary model stores information for each monthly lotto period.
+
+Fields include:
+
+- month
+- year
+- total winnings
+- subscription price
+- notes
+
+Relationships:
+
+- One Monthly Summary can have many Draws.
+- One Monthly Summary can have many Subscriptions.
+
+### Draw
+
+The Draw model stores each individual lottery draw.
+
+Fields include:
+
 - title
 - draw date
-- result
-- winnings
+- draw number
+- result text
+- winnings amount
 - current draw status
 
 Relationships:
-- One Draw can have many Comments.
+
+- Each Draw belongs to one Monthly Summary.
+- One Draw can have many Draw Images.
+- One Draw can have many Draw Comments.
+
+### Draw Image
+
+The Draw Image model stores images connected to individual draws.
+
+Fields include:
+
+- image
+- caption
+
+Relationships:
+
+- Each Draw Image belongs to one Draw.
 - One Draw can have many Draw Images.
 
-### Comment
-Stores user comments on draw detail pages.
+### Draw Comment
+
+The Draw Comment model stores user comments on draw detail pages.
+
+Fields include:
+
+- comment body
+- created date
 
 Relationships:
-- Each Comment belongs to one User.
-- Each Comment belongs to one Draw.
+
+- Each Draw Comment belongs to one User.
+- Each Draw Comment belongs to one Draw.
+- One User can create many Draw Comments.
+- One Draw can have many Draw Comments.
 
 ### Subscription
-Stores user lotto participation and payment status.
+
+The Subscription model stores user lotto participation and payment status.
+
+Fields include:
+
+- number of draws paid for
+- amount paid
+- joined date
+- expiry date
+- active status
+- payment completed status
+- Stripe checkout session ID
 
 Relationships:
+
 - Each Subscription belongs to one User.
+- Each Subscription belongs to one Monthly Summary.
+- One User can have many Subscriptions.
+- One Monthly Summary can have many Subscriptions.
 - Payment status is updated through Stripe webhook events.
 
-### Monthly Summary
-Stores monthly totals and subscription pricing information.
+### Database Relationships Summary
 
-The schema separates authentication, lotto data, payment records, and user interaction data into logical entities. This avoids duplication and keeps the application maintainable.
+| Model | Relationship | Related Model |
+| --- | --- | --- |
+| User | One-to-one | Profile |
+| User | One-to-many | Draw Comment |
+| User | One-to-many | Subscription |
+| Monthly Summary | One-to-many | Draw |
+| Monthly Summary | One-to-many | Subscription |
+| Draw | One-to-many | Draw Image |
+| Draw | One-to-many | Draw Comment |
 
-![Data Schema](doc/img/schema.png)
+This structure supports the main application features, including user registration, profile management, monthly lotto draws, draw images, comments, subscriptions, and Stripe payment confirmation.
 
 ---
 
