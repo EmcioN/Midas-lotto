@@ -153,7 +153,7 @@ Navigation is consistent across all pages using a fixed navbar.
 
 ---
 
-### Delete copmment page
+### Delete comment page
 
 ![Comments](doc/img/deletepage.png)
 
