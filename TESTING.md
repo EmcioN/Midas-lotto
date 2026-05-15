@@ -82,7 +82,7 @@ All core functionality of the Midas Lotto application was manually tested to ens
 | Comments | Try to comment while logged out | User is asked to log in | Pass |
 | Comments | View comments on draw detail page | Comments are displayed with username and date | Pass |
 | Delete own comment | Logged-in user deletes their own comment | Comment is removed and user is redirected to draw detail page | Pass |
-| Defensive delete | Different logged-in user tries direct delete URL | Error message is shown, user is redirected, and comment remains | Pass |
+| Defensive delete | Different logged-in user tries direct delete URL | Error message is shown and comment remains | Pass |
 | Anonymous delete | Logged-out user visits delete URL | User is redirected to login page | Pass |
 
 ---
