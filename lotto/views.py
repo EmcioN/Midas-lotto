@@ -54,22 +54,33 @@ def join_subscription(request):
     latest_month = MonthlySummary.objects.first()
 
     if not latest_month:
-        messages.error(request, "No active lotto month is available right now.")
+        messages.error(
+            request,
+            "No active lotto month is available right now.",
+        )
         return redirect("profile")
 
     existing_subscription = Subscription.objects.filter(
-        user=request.user, monthly_summary=latest_month
+        user=request.user,
+        monthly_summary=latest_month,
     ).first()
 
     if existing_subscription:
         if existing_subscription.payment_completed:
             messages.info(
-                request, "You already have a paid subscription for the current month."
+                request,
+                (
+                    "You already have a paid subscription "
+                    "for the current month."
+                ),
             )
         else:
             messages.info(
                 request,
-                "You already started checkout for the current month. Please complete that payment or contact support.",
+                (
+                    "You already started checkout for the current month. "
+                    "Please complete that payment or contact support."
+                ),
             )
         return redirect("profile")
 
@@ -77,12 +88,14 @@ def join_subscription(request):
 
     if remaining_draws <= 0:
         messages.error(
-            request, "This month is already finished. No draws remain to join."
+            request,
+            "This month is already finished. No draws remain to join.",
         )
         return redirect("profile")
 
     amount_to_pay = Subscription.calculate_price(
-        latest_month.subscription_price, remaining_draws
+        latest_month.subscription_price,
+        remaining_draws,
     )
 
     if request.method == "POST":
@@ -91,7 +104,10 @@ def join_subscription(request):
             expiry_date = date(
                 latest_month.year,
                 latest_month.month,
-                calendar.monthrange(latest_month.year, latest_month.month)[1],
+                calendar.monthrange(
+                    latest_month.year,
+                    latest_month.month,
+                )[1],
             )
 
             subscription, created = Subscription.objects.get_or_create(
@@ -132,7 +148,10 @@ def join_subscription(request):
                             "price_data": {
                                 "currency": "eur",
                                 "product_data": {
-                                    "name": f"Midas Lotto subscription for {latest_month}",
+                                    "name": (
+                                        "Midas Lotto subscription "
+                                        f"for {latest_month}"
+                                    ),
                                 },
                                 "unit_amount": int(amount_to_pay * 100),
                             },
@@ -147,7 +166,9 @@ def join_subscription(request):
                     },
                 )
 
-                subscription.stripe_checkout_session_id = checkout_session.id
+                subscription.stripe_checkout_session_id = (
+                    checkout_session.id
+                )
                 subscription.save()
 
                 return redirect(checkout_session.url, code=303)
@@ -155,7 +176,10 @@ def join_subscription(request):
             except stripe.error.StripeError:
                 messages.error(
                     request,
-                    "There was a problem starting the Stripe checkout. Please try again.",
+                    (
+                        "There was a problem starting the Stripe checkout. "
+                        "Please try again."
+                    ),
                 )
                 return redirect("join_subscription")
     else:
@@ -183,7 +207,8 @@ def subscription_success(request):
 
             if payment_status == "paid":
                 subscription = Subscription.objects.filter(
-                    stripe_checkout_session_id=session_id, user=request.user
+                    stripe_checkout_session_id=session_id,
+                    user=request.user,
                 ).first()
 
                 if subscription and not subscription.payment_completed:
@@ -219,7 +244,9 @@ def stripe_webhook(request):
 
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+            payload,
+            sig_header,
+            settings.STRIPE_WEBHOOK_SECRET,
         )
     except ValueError:
         logger.exception("Invalid Stripe webhook payload")
@@ -253,9 +280,13 @@ def stripe_webhook(request):
             profile.subscription_expiry = subscription.expiry_date
             profile.save()
 
-            logger.info("Subscription activated for user %s", subscription.user_id)
+            logger.info(
+                "Subscription activated for user %s",
+                subscription.user_id,
+            )
 
     return HttpResponse(status=200)
+
 
 @login_required
 def delete_comment(request, comment_id):
@@ -264,7 +295,7 @@ def delete_comment(request, comment_id):
     if comment.user != request.user and not request.user.is_superuser:
         messages.error(
             request,
-            "You do not have permission to delete this comment."
+            "You do not have permission to delete this comment.",
         )
         return redirect("draw_detail", draw_id=comment.draw.id)
 

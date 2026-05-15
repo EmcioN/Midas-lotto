@@ -61,6 +61,8 @@ Users of Midas Lotto want to:
 - As a user, I want to comment on a draw so that I can share my thoughts with others.
 - As a user, I want to join the current month subscription so that I can participate in the lotto.
 - As a user, I want to pay for my subscription securely so that my payment is handled safely.
+- As a logged-in user, I want to delete my own comments so that I can manage content I have added.
+- As a site owner, I want users to be prevented from deleting other users’ comments so that data remains secure.
 
 ### Site Owner Goals
 

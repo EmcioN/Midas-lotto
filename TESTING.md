@@ -213,6 +213,8 @@ All defined user stories for the Midas Lotto project have been successfully fulf
 | As a user, I want to join the current month subscription so that I can participate in the lotto | Subscription flow tested |
 | As a user, I want to pay for my subscription securely so that my payment is handled safely | Stripe Checkout and webhook tested |
 | As a non-authenticated user, I am restricted from protected pages | Access control and login redirects tested |
+| As a logged-in user, I want to delete my own comments so that I can manage content I have added | Comment delete button, confirmation page, successful deletion, and success message tested |
+| As a site owner, I want users to be prevented from deleting other users’ comments so that data remains secure | Delete button hidden for other users’ comments and direct URL access protection tested |
 
 ---
 
@@ -352,6 +354,8 @@ All defined user stories for the Midas Lotto project have been successfully fulf
 
 ![List](/doc/img/lottomodelsv.png)
 
+![List](/doc/img/lottomodelsvalid.png)
+
 ### test.py
 
 ![List](/doc/img/lottotestv.png)
@@ -364,13 +368,24 @@ All defined user stories for the Midas Lotto project have been successfully fulf
 
 ![List](/doc/img/lottoviewsv.png)
 
+![List](/doc/img/lottoviewsvalid.png)
+
 ## Manual Testing and Fixes
 
 Manual testing was carried out throughout the development of the Midas Lotto project. Features were tested after implementation, during debugging, and again after deployment to ensure consistency between local and production environments.
 
-- logged-in user can delete own comment
-- logged-in user cannot delete another user's comment
-- anonymous user is redirected to login
+## Delete Functionality Testing
+
+| Test | Action | Expected Result | Result |
+| --- | --- | --- | --- |
+| Delete button visibility | Log in and view own comment | Delete button is visible beside own comment | Pass |
+| Delete button hidden | Log in as a different user | Delete button is not visible beside another user's comment | Pass |
+| Delete confirmation page | Click delete on own comment | Confirmation page opens before deletion | Pass |
+| Confirm delete | Submit delete confirmation form | Comment is removed from the draw detail page | Pass |
+| Cancel delete | Click cancel on delete confirmation page | User returns to draw detail page and comment remains | Pass |
+| Direct URL protection | Different logged-in user enters another user's delete URL | 403 forbidden response is shown and comment remains | Pass |
+| Anonymous protection | Logged-out user enters delete URL | User is redirected to login page | Pass |
+
 
 ---
 

@@ -13,7 +13,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Your account has been created successfully.")
+            messages.success(
+                request,
+                "Your account has been created successfully.",
+            )
             return redirect("profile")
     else:
         form = UserRegisterForm()
@@ -24,8 +27,14 @@ def register(request):
 @login_required
 def profile(request):
     latest_month = MonthlySummary.objects.first()
-    remaining_draws = latest_month.draws_remaining() if latest_month else 0
-    subscriptions = request.user.subscriptions.select_related("monthly_summary").all()
+    remaining_draws = (
+        latest_month.draws_remaining()
+        if latest_month
+        else 0
+    )
+    subscriptions = request.user.subscriptions.select_related(
+        "monthly_summary"
+    ).all()
 
     context = {
         "latest_month": latest_month,
@@ -38,8 +47,14 @@ def profile(request):
 @login_required
 def profile_edit(request):
     if request.method == "POST":
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        user_form = UserUpdateForm(
+            request.POST,
+            instance=request.user,
+        )
+        profile_form = ProfileUpdateForm(
+            request.POST,
+            instance=request.user.profile,
+        )
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()

@@ -8,8 +8,16 @@ from django.core.exceptions import ValidationError
 class MonthlySummary(models.Model):
     month = models.PositiveSmallIntegerField()
     year = models.PositiveSmallIntegerField()
-    total_winnings = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    subscription_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    total_winnings = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+    )
+    subscription_price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+    )
     notes = models.TextField(blank=True)
 
     class Meta:
@@ -20,7 +28,9 @@ class MonthlySummary(models.Model):
         return f"{self.month:02d}/{self.year}"
 
     def draws_completed(self):
-        return self.draws.filter(draw_date__lt=timezone.now().date()).count()
+        return self.draws.filter(
+            draw_date__lt=timezone.now().date()
+        ).count()
 
     def draws_remaining(self):
         remaining = 4 - self.draws_completed()
@@ -29,15 +39,24 @@ class MonthlySummary(models.Model):
 
 class Draw(models.Model):
     monthly_summary = models.ForeignKey(
-        MonthlySummary, on_delete=models.CASCADE, related_name="draws"
+        MonthlySummary,
+        on_delete=models.CASCADE,
+        related_name="draws",
     )
     title = models.CharField(max_length=200)
     draw_date = models.DateField()
     draw_number = models.PositiveSmallIntegerField()
     result_text = models.TextField(blank=True)
-    winnings_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    winnings_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+    )
     is_current = models.BooleanField(
-        default=False, help_text="Only one draw should be marked as current at a time."
+        default=False,
+        help_text=(
+            "Only one draw should be marked as current at a time."
+        ),
     )
 
     class Meta:
@@ -48,7 +67,10 @@ class Draw(models.Model):
 
     def clean(self):
         if self.is_current:
-            existing_current = Draw.objects.filter(is_current=True).exclude(pk=self.pk)
+            existing_current = Draw.objects.filter(
+                is_current=True
+            ).exclude(pk=self.pk)
+
             if existing_current.exists():
                 raise ValidationError(
                     "Only one draw can be marked as current at a time."
@@ -60,7 +82,11 @@ class Draw(models.Model):
 
 
 class DrawImage(models.Model):
-    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name="images")
+    draw = models.ForeignKey(
+        Draw,
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
     image = models.ImageField(upload_to="draw_images/")
     caption = models.CharField(max_length=255, blank=True)
 
@@ -69,8 +95,15 @@ class DrawImage(models.Model):
 
 
 class DrawComment(models.Model):
-    draw = models.ForeignKey(Draw, on_delete=models.CASCADE, related_name="comments")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    draw = models.ForeignKey(
+        Draw,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -83,18 +116,29 @@ class DrawComment(models.Model):
 
 class Subscription(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
     )
     monthly_summary = models.ForeignKey(
-        MonthlySummary, on_delete=models.CASCADE, related_name="subscriptions"
+        MonthlySummary,
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
     )
     draws_paid_for = models.PositiveSmallIntegerField(default=4)
-    amount_paid = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    amount_paid = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+    )
     joined_at = models.DateField(default=timezone.now)
     expiry_date = models.DateField()
     active = models.BooleanField(default=False)
     payment_completed = models.BooleanField(default=False)
-    stripe_checkout_session_id = models.CharField(max_length=255, blank=True)
+    stripe_checkout_session_id = models.CharField(
+        max_length=255,
+        blank=True,
+    )
 
     class Meta:
         ordering = ["-joined_at"]
